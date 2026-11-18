@@ -31,6 +31,11 @@ To translate your ROM, use my [Pocket Monsters' Stadium Eng Patcher](https://gam
 -   Ball and cup names keep the Jap charm: Monster Ball, Super Ball, Hyper Ball, Master Ball
 -   Pokémon from your Jap Game Pak that you didn't give a nickname show their English names
 
+  <!-- Single image per line -->
+<p align="center">
+  <img src="CharizardBattle.png" width="100%">
+</p>
+
 ----------
 
 ## Legal
