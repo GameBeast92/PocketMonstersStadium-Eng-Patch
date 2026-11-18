@@ -1,33 +1,42 @@
 # Pocket Monsters' Stadium English Patcher
 
-English translation patch for **Pocket Monsters' Stadium** (Japan, 1998, Nintendo 64), the very first Stadium game.
+My first attempt at an English translation patch for **Pocket Monsters' Stadium** (Japan, 1998, Nintendo 64), the very first 3D Pokémon game!
 
-**Patch it in your browser:** https://gamebeast92.github.io/Stadium0EnglishPatcher/
-
-## How to use
-1. Open the patcher page above.
-2. Select your own legal copy of *Pocket Monsters Stadium (Japan)*.
-   .z64, .v64 and .n64 dumps all work (also inside a .zip).
-3. Press **Apply patch** and save the English ROM (.z64).
-
-The ROM is patched inside your browser; nothing is uploaded. Only the original, unmodified game is accepted:
-
-| | |
-|---|---|
-| CRC32 | `3139189c` |
-| MD5 | `c46e087d966a35095df96799b0b4ffae` |
-| SHA-1 | `8bc8d2ff7df25b26bd0c353d2adfe83e4e3a7a87` |
-
-(checksums of the .z64 dump)
+----------
 
 ## About the translation
-- Menus, battles, the Pokédex, the Game Pak screens and the staff credits are in English.
-- Wording, terms and letters follow the official English Pokémon Stadium; content that only exists in this game keeps its original meaning.
-- Ball and cup names keep the Japanese originals: Monster Ball, Super Ball, Hyper Ball, Master Ball.
-- Pokémon from your Game Pak that were never renamed show their English names; nicknames and Trainer names stay exactly as saved on the cartridge.
+Every word and term was cross-referenced with the US *Pokémon Stadium* to keep everything pure and faithful.
+Also, the Trainers who only appear in this game (from the Nintendo Cup '97 and '98) take their names from Bulbapedia.
+
+----------
+
+To translate your ROM, use my [Pocket Monsters' Stadium Eng Patcher](https://gamebeast92.github.io/Stadium0EnglishPatcher/)
+
+----------
+
+## How to use
+👉🏻Open the patcher page above.
+👉🏻Select your own legal copy of *Pocket Monsters Stadium (Japan)*.z64, .v64 and .n64 dumps all work (including ones inside a .zip).
+👉🏻Press **Apply patch** and save the English ROM (.z64).
+
+----------
+
+## What's exactly translated?👀
+
+-   **All** Japanese text strings you can find in the game(Menus, battles, Pokédex, Game Pak screens, Staff credits)
+-   Ball and cup names keep the Jap charm: Monster Ball, Super Ball, Hyper Ball, Master Ball
+-   Pokémon from your Jap Game Pak that you didn't give a nickname show their English names
+
+----------
 
 ## Legal
 This project does not provide copyrighted game files. You must legally obtain the game yourself.
 Pokémon and Pocket Monsters Stadium are trademarks of Nintendo, Creatures and GAME FREAK. This is a non-commercial fan project and is not affiliated with them.
+
+## Special Thanks
+
+| Name             | Reason                              |
+|------------------|-------------------------------------|
+| SuperPep         | Taught me how to set-up a site patcher, thanks buddy! |
 
 Patcher powered by [Rom Patcher JS](https://github.com/marcrobledo/RomPatcher.js) (MIT license, see `rom-patcher-js/LICENSE`).
