@@ -271,6 +271,7 @@ header, main, footer { position: relative; z-index: 1; }
    Two screenshots of the same screen on top of each other: the English one underneath, the
    Japanese one on top, cut off at --pos.  Same width and frame as the panel. */
 .site-compare { max-width: 660px; margin: 24px auto 0; }
+.compare + .compare { margin-top: 24px; }
 .compare {
 	--pos: 50%;
 	position: relative;

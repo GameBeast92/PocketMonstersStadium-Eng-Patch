@@ -206,24 +206,32 @@
 		<!-- before / after: drag the line.  Left of the line = the original Japanese game,
 		     right of it = the English patch; line all the way left = all English. -->
 		<section class="site-compare" aria-label="Compare the original Japanese game with the English patch">
-			<div class="compare" id="compare" style="--pos: 50%">
+			<div class="compare" style="--pos: 50%">
 				<img class="compare-img" src="./assets/compare_english.webp" width="1320" height="1001" loading="lazy"
 					draggable="false" alt="Battle mode menu with the English patch" />
 				<img class="compare-img compare-top" src="./assets/compare_vanilla.webp" width="1320" height="1001" loading="lazy"
 					draggable="false" alt="Battle mode menu in the original Japanese game" />
 				<div class="compare-line" aria-hidden="true"></div>
-				<div class="compare-knob" id="compare-knob" role="slider" tabindex="0" aria-label="Compare: Japanese to English"
+				<div class="compare-knob" role="slider" tabindex="0" aria-label="Compare battle mode menu: Japanese to English"
+					aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="half Japanese, half English"></div>
+			</div>
+			<div class="compare" style="--pos: 50%">
+				<img class="compare-img" src="./assets/compare_charizard_english.webp" width="1320" height="1001" loading="lazy"
+					draggable="false" alt="Rental Pokémon screen (Charizard) with the English patch" />
+				<img class="compare-img compare-top" src="./assets/compare_charizard_vanilla.webp" width="1320" height="1001" loading="lazy"
+					draggable="false" alt="Rental Pokémon screen (Charizard) in the original Japanese game" />
+				<div class="compare-line" aria-hidden="true"></div>
+				<div class="compare-knob" role="slider" tabindex="0" aria-label="Compare rental pokémon screen (charizard): Japanese to English"
 					aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="half Japanese, half English"></div>
 			</div>
 		</section>
 	</main>
 
 	<script type="text/javascript">
-		/* compare slider: drag anywhere on the picture (mouse, pen or finger) or use the arrow keys
+		/* compare sliders (each .compare): drag anywhere on the picture (mouse, pen or finger) or use the arrow keys
 		   on the knob; vertical swipes still scroll the page on phones (touch-action: pan-y) */
-		(function () {
-			var box = document.getElementById('compare');
-			var knob = document.getElementById('compare-knob');
+		Array.prototype.forEach.call(document.querySelectorAll('.compare'), function (box) {
+			var knob = box.querySelector('.compare-knob');
 			var pos = 50, dragging = false;
 			function set(p) {
 				pos = Math.max(0, Math.min(100, p));
@@ -258,7 +266,7 @@
 				e.preventDefault();
 			});
 			set(50);
-		})();
+		});
 	</script>
 
 	<footer id="rom-patcher-powered" class="text-center">
