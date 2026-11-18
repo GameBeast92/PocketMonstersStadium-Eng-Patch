@@ -15,8 +15,8 @@ To translate your ROM, use my [Pocket Monsters' Stadium Eng Patcher](https://gam
 ----------
 
 ## How to use
-👉🏻Open the patcher page above.
-👉🏻Select your own legal copy of *Pocket Monsters Stadium (Japan)*.z64, .v64 and .n64 dumps all work (including ones inside a .zip).
+👉🏻Open the patcher page above.\
+👉🏻Select your own legal copy of *Pocket Monsters Stadium (Japan)*.z64, .v64 and .n64 dumps all work (including ones inside a .zip).\
 👉🏻Press **Apply patch** and save the English ROM (.z64).
 
 ----------
