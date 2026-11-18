@@ -322,24 +322,6 @@ header, main, footer { position: relative; z-index: 1; }
 }
 .compare:hover .compare-knob, .compare-dragging .compare-knob { transform: scale(1.08); }
 .compare-knob:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
-/* labels: the panel's yellow and ink; each fades when the line covers its side */
-.compare-label {
-	position: absolute;
-	top: 10px;
-	padding: 3px 9px;
-	border-radius: 5px;
-	background: var(--yellow);
-	color: var(--panel-ink);
-	font-weight: 700;
-	font-size: 13px;
-	letter-spacing: .5px;
-	box-shadow: 0 0 0 1px rgba(0, 58, 112, .6), 0 2px 6px rgba(0, 0, 0, .5);
-	pointer-events: none;
-	transition: opacity .15s;
-}
-.compare-label-left { left: 10px; }
-.compare-label-right { right: 10px; }
-.compare-at-left .compare-label-left, .compare-at-right .compare-label-right { opacity: 0; }
 
 /* ---- footer ---- */
 #rom-patcher-powered { margin-top: 22px; }

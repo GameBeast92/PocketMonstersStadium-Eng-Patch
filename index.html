@@ -211,8 +211,6 @@
 					draggable="false" alt="Battle mode menu with the English patch" />
 				<img class="compare-img compare-top" src="./assets/compare_vanilla.webp" width="1320" height="1001" loading="lazy"
 					draggable="false" alt="Battle mode menu in the original Japanese game" />
-				<span class="compare-label compare-label-left" aria-hidden="true">JAPANESE</span>
-				<span class="compare-label compare-label-right" aria-hidden="true">ENGLISH</span>
 				<div class="compare-line" aria-hidden="true"></div>
 				<div class="compare-knob" id="compare-knob" role="slider" tabindex="0" aria-label="Compare: Japanese to English"
 					aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="half Japanese, half English"></div>
@@ -233,8 +231,6 @@
 				knob.setAttribute('aria-valuenow', Math.round(pos));
 				knob.setAttribute('aria-valuetext', pos <= 0 ? 'all English' : pos >= 100 ? 'all Japanese' :
 					Math.round(pos) + '% Japanese, ' + Math.round(100 - pos) + '% English');
-				box.classList.toggle('compare-at-left', pos < 18);
-				box.classList.toggle('compare-at-right', pos > 82);
 			}
 			function fromEvent(e) {
 				var r = box.getBoundingClientRect();
