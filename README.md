@@ -14,7 +14,7 @@ Also, the Trainers who only appear in this game (from the Nintendo Cup '97 and '
 
 ----------
 
-To translate your ROM, use my [Pocket Monsters' Stadium Eng Patcher](https://gamebeast92.github.io/Stadium0EnglishPatcher/)
+To translate your ROM, use my [Pocket Monsters' Stadium Eng Patcher](https://gamebeast92.github.io/PocketMonstersStadium-Eng-Patch/)
 
 ----------
 
