@@ -1,5 +1,9 @@
 # Pocket Monsters' Stadium English Patcher
 
+<p align="center">
+  <img src="Graphics/PocketMonsters'StadiumLogo.png" width="100%">
+</p>
+
 My first attempt at an English translation patch for **Pocket Monsters' Stadium** (Japan, 1998, Nintendo 64), the very first 3D Pokémon game!
 
 ----------
