@@ -202,7 +202,68 @@
 				</p>
 			</div>
 		</div>
+
+		<!-- before / after: drag the line.  Left of the line = the original Japanese game,
+		     right of it = the English patch; line all the way left = all English. -->
+		<section class="site-compare" aria-label="Compare the original Japanese game with the English patch">
+			<div class="compare" id="compare" style="--pos: 50%">
+				<img class="compare-img" src="./assets/compare_english.webp" width="1320" height="1001" loading="lazy"
+					draggable="false" alt="Battle mode menu with the English patch" />
+				<img class="compare-img compare-top" src="./assets/compare_vanilla.webp" width="1320" height="1001" loading="lazy"
+					draggable="false" alt="Battle mode menu in the original Japanese game" />
+				<span class="compare-label compare-label-left" aria-hidden="true">JAPANESE</span>
+				<span class="compare-label compare-label-right" aria-hidden="true">ENGLISH</span>
+				<div class="compare-line" aria-hidden="true"></div>
+				<div class="compare-knob" id="compare-knob" role="slider" tabindex="0" aria-label="Compare: Japanese to English"
+					aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="half Japanese, half English"></div>
+			</div>
+		</section>
 	</main>
+
+	<script type="text/javascript">
+		/* compare slider: drag anywhere on the picture (mouse, pen or finger) or use the arrow keys
+		   on the knob; vertical swipes still scroll the page on phones (touch-action: pan-y) */
+		(function () {
+			var box = document.getElementById('compare');
+			var knob = document.getElementById('compare-knob');
+			var pos = 50, dragging = false;
+			function set(p) {
+				pos = Math.max(0, Math.min(100, p));
+				box.style.setProperty('--pos', pos + '%');
+				knob.setAttribute('aria-valuenow', Math.round(pos));
+				knob.setAttribute('aria-valuetext', pos <= 0 ? 'all English' : pos >= 100 ? 'all Japanese' :
+					Math.round(pos) + '% Japanese, ' + Math.round(100 - pos) + '% English');
+				box.classList.toggle('compare-at-left', pos < 18);
+				box.classList.toggle('compare-at-right', pos > 82);
+			}
+			function fromEvent(e) {
+				var r = box.getBoundingClientRect();
+				set((e.clientX - r.left) / r.width * 100);
+			}
+			box.addEventListener('pointerdown', function (e) {
+				if (e.button !== 0) return;
+				dragging = true;
+				box.classList.add('compare-dragging');
+				box.setPointerCapture(e.pointerId);
+				fromEvent(e);
+				e.preventDefault();
+			});
+			box.addEventListener('pointermove', function (e) { if (dragging) fromEvent(e); });
+			function stop() { dragging = false; box.classList.remove('compare-dragging'); }
+			box.addEventListener('pointerup', stop);
+			box.addEventListener('pointercancel', stop);
+			knob.addEventListener('keydown', function (e) {
+				var step = e.shiftKey ? 10 : 2;
+				if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') set(pos - step);
+				else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') set(pos + step);
+				else if (e.key === 'Home') set(0);
+				else if (e.key === 'End') set(100);
+				else return;
+				e.preventDefault();
+			});
+			set(50);
+		})();
+	</script>
 
 	<footer id="rom-patcher-powered" class="text-center">
 		<a href="https://github.com/marcrobledo/RomPatcher.js" target="_blank" rel="noopener"><img

@@ -267,6 +267,80 @@ header h1 {
 header, main, footer { position: relative; z-index: 1; }
 @media (max-width: 1000px) { .site-mon { display: none; } }
 
+/* ---- before / after slider under the panel (index.html) ----
+   Two screenshots of the same screen on top of each other: the English one underneath, the
+   Japanese one on top, cut off at --pos.  Same width and frame as the panel. */
+.site-compare { max-width: 660px; margin: 24px auto 0; }
+.compare {
+	--pos: 50%;
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 1320 / 1001;
+	border: 3px solid var(--frame);
+	border-radius: 8px;
+	background: #000;
+	box-shadow: 0 0 0 2px #000, 0 10px 30px rgba(0, 0, 0, .6);
+	cursor: ew-resize;
+	touch-action: pan-y;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.compare-img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	pointer-events: none;
+}
+.compare-top { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.compare-line {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: var(--pos);
+	width: 3px;
+	margin-left: -1.5px;
+	background: #fff;
+	box-shadow: 0 0 0 1px rgba(0, 58, 112, .6), 0 0 8px rgba(0, 0, 0, .7);
+	pointer-events: none;
+}
+/* the knob: the Apply button's colours (blue, yellow arrows), round */
+.compare-knob {
+	position: absolute;
+	top: 50%;
+	left: var(--pos);
+	width: 44px;
+	height: 44px;
+	margin: -22px 0 0 -22px;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	background: var(--blue) no-repeat center / 30px 16px
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 16'%3E%3Cpath fill='%23ffcb05' d='M0 8 9 0v16zM30 8l-9-8v16z'/%3E%3C/svg%3E");
+	box-shadow: 0 0 0 1px rgba(0, 58, 112, .8), 0 0 12px rgba(0, 0, 0, .6);
+	transition: transform .12s;
+}
+.compare:hover .compare-knob, .compare-dragging .compare-knob { transform: scale(1.08); }
+.compare-knob:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+/* labels: the panel's yellow and ink; each fades when the line covers its side */
+.compare-label {
+	position: absolute;
+	top: 10px;
+	padding: 3px 9px;
+	border-radius: 5px;
+	background: var(--yellow);
+	color: var(--panel-ink);
+	font-weight: 700;
+	font-size: 13px;
+	letter-spacing: .5px;
+	box-shadow: 0 0 0 1px rgba(0, 58, 112, .6), 0 2px 6px rgba(0, 0, 0, .5);
+	pointer-events: none;
+	transition: opacity .15s;
+}
+.compare-label-left { left: 10px; }
+.compare-label-right { right: 10px; }
+.compare-at-left .compare-label-left, .compare-at-right .compare-label-right { opacity: 0; }
+
 /* ---- footer ---- */
 #rom-patcher-powered { margin-top: 22px; }
 #rom-patcher-powered a { color: #f0f0f0; text-shadow: 0 1px 3px #000, 0 0 6px #000; }
