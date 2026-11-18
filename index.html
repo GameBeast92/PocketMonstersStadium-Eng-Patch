@@ -9,22 +9,28 @@
 	<meta name="description" content="Patch your own Pocket Monsters Stadium (Japan) ROM into English, in your browser." />
 
 	<script type="text/javascript">
-		/* background colour: one of the 9 colours Stadium 0's code draws its menu background in
-		   (tools/make_menu_bg_psd.py), picked at random on every load */
-		(function () {
+		/* background colour: one of the colours Stadium 0's code draws its menu background in
+		   (tools/make_menu_bg_psd.py), picked at random on every load.  The Pokedex green
+		   (8FCC8F) is kept out: it only shows when the selected ROM is the right one
+		   (setBackground, called from markChecksums below). */
+		var BG_MATCH = '#8fcc8f';   // pokedex green = ROM accepted
+		var BG_RANDOM = (function () {
 			var colours = [
 				'#c8c8c8',   // main menu
 				'#cc8f8f',   // battle mode
 				'#cc8fb8',   // register
 				'#8f8fcc',   // organize
 				'#ffd57f',   // list
-				'#8fcc8f',   // pokedex
 				'#8fccb8',   // party
 				'#ab4966',   // team select before battle
 				'#3264a2'    // unused pokedex menu
 			];
-			document.documentElement.style.setProperty('--bg-tint', colours[Math.floor(Math.random() * colours.length)]);
+			return colours[Math.floor(Math.random() * colours.length)];
 		})();
+		function setBackground(colour) {
+			document.documentElement.style.backgroundColor = colour;
+		}
+		setBackground(BG_RANDOM);
 	</script>
 
 	<!-- Rom Patcher JS (github.com/marcrobledo/RomPatcher.js, MIT): library files, unchanged -->
@@ -68,6 +74,8 @@
 			var box = document.getElementById('rom-patcher-rom-info');
 			box.classList.remove('hash-ok', 'hash-bad');
 			if (state) box.classList.add(state);
+			/* background: green only for the right ROM, otherwise the colour picked on load */
+			setBackground(state === 'hash-ok' ? BG_MATCH : BG_RANDOM);
 		}
 
 		window.addEventListener('load', function () {

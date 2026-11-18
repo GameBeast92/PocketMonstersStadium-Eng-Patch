@@ -26,10 +26,12 @@
    exact shapes, shading solved from the game's pixels, grey as the game colours it).
    512 px picture shown at 256 px = the game's 128 px tile at 2x; fixed, like the corner renders */
 /* the tile holds the texture's own values (no colour); multiply by the tint = the game's
-   TEXEL0 x ENV.  --bg-tint is one of the game's 9 background colours, picked at random on
-   every page load (index.html, before the first paint) */
+   TEXEL0 x ENV.  The colour is one of the game's background colours, picked at random on
+   every page load (index.html, before the first paint), and the Pokedex green when the
+   selected ROM is the right one (set as the element's own background-color; switches at
+   once - a CSS transition here didn't run reliably in testing) */
 html {
-	background: var(--bg-tint, #c8c8c8) url(assets/bg_pokeballs.png) repeat fixed;
+	background: #c8c8c8 url(assets/bg_pokeballs.png) repeat fixed;   /* colour set by index.html */
 	background-size: 256px 256px;
 	background-blend-mode: multiply;
 }
