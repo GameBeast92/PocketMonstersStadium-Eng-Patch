@@ -142,7 +142,9 @@ header h1 {
 #rom-patcher-rom-info.hash-bad #rom-patcher-span-md5,
 #rom-patcher-rom-info.hash-bad #rom-patcher-span-sha1 { color: var(--bad); }
 /* error message ("Source ROM checksum mismatch"): the Apply button's style in red
-   (gradient, lighter rim, rounded corners, glow) with the library's icon on a white badge */
+   (gradient, lighter rim, rounded corners, glow) with the library's icon on a white badge.
+   The icons (rom-patcher-js/assets/icon_x_circle_red.svg, icon_alert_orange.svg) are built in
+   as data: so the badge never shows up empty if the icon file can't be fetched at that moment. */
 #rom-patcher-error-message {
 	display: inline-flex;
 	align-items: center;
@@ -163,7 +165,7 @@ header h1 {
 	width: 24px;
 	height: 24px;
 	border-radius: 5px;
-	background: #fff url(rom-patcher-js/assets/icon_x_circle_red.svg) center / 16px no-repeat;
+	background: #fff url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSIjZjAwIiBkPSJNMi4zNDQgMi4zNDNoLS4wMDFhOCA4IDAgMCAxIDExLjMxNCAxMS4zMTRBOC4wMDIgOC4wMDIgMCAwIDEgLjIzNCAxMC4wODlhOCA4IDAgMCAxIDIuMTEtNy43NDZabTEuMDYgMTAuMjUzYTYuNSA2LjUgMCAxIDAgOS4xMDgtOS4yNzUgNi41IDYuNSAwIDAgMC05LjEwOCA5LjI3NVpNNi4wMyA0Ljk3IDggNi45NGwxLjk3LTEuOTdhLjc0OS43NDkgMCAwIDEgMS4yNzUuMzI2Ljc0OS43NDkgMCAwIDEtLjIxNS43MzRMOS4wNiA4bDEuOTcgMS45N2EuNzQ5Ljc0OSAwIDAgMS0uMzI2IDEuMjc1Ljc0OS43NDkgMCAwIDEtLjczNC0uMjE1TDggOS4wNmwtMS45NyAxLjk3YS43NDkuNzQ5IDAgMCAxLTEuMjc1LS4zMjYuNzQ5Ljc0OSAwIDAgMSAuMjE1LS43MzRMNi45NCA4IDQuOTcgNi4wM2EuNzUxLjc1MSAwIDAgMSAuMDE4LTEuMDQyLjc1MS43NTEgMCAwIDEgMS4wNDItLjAxOFoiPjwvcGF0aD48L3N2Zz4=") center / 16px no-repeat;
 }
 #rom-patcher-error-message:empty { display: none; }
 /* the library's milder notices use the same shape in orange */
@@ -174,7 +176,7 @@ header h1 {
 	color: #fff;
 	box-shadow: 0 0 14px rgba(224, 122, 18, .7), 0 0 2px rgba(0, 58, 112, .8);
 }
-#rom-patcher-error-message.warning::before { background-image: url(rom-patcher-js/assets/icon_alert_orange.svg); }
+#rom-patcher-error-message.warning::before { background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSIjZmY3ODAwIiBkPSJNNi40NTcgMS4wNDdjLjY1OS0xLjIzNCAyLjQyNy0xLjIzNCAzLjA4NiAwbDYuMDgyIDExLjM3OEExLjc1IDEuNzUgMCAwIDEgMTQuMDgyIDE1SDEuOTE4YTEuNzUgMS43NSAwIDAgMS0xLjU0My0yLjU3NVptMS43NjMuNzA3YS4yNS4yNSAwIDAgMC0uNDQgMEwxLjY5OCAxMy4xMzJhLjI1LjI1IDAgMCAwIC4yMi4zNjhoMTIuMTY0YS4yNS4yNSAwIDAgMCAuMjItLjM2OFptLjUzIDMuOTk2djIuNWEuNzUuNzUgMCAwIDEtMS41IDB2LTIuNWEuNzUuNzUgMCAwIDEgMS41IDBaTTkgMTFhMSAxIDAgMSAxLTIgMCAxIDEgMCAwIDEgMiAwWiI+PC9wYXRoPjwvc3ZnPg=="); }
 #byte-order-note { color: var(--panel-ink); min-height: 0; }
 #byte-order-note:not(:empty) { margin-bottom: 8px; }
 
