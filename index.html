@@ -6,6 +6,7 @@
 	<meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="icon" type="image/png" href="./assets/favicon.png" />
+	<link rel="preload" as="image" href="./assets/bg_ps2_error.png" />
 	<meta name="description" content="Patch your own Pocket Monsters Stadium (Japan) ROM into English, in your browser." />
 
 	<script type="text/javascript">
@@ -14,6 +15,7 @@
 		   (8FCC8F) is kept out: it only shows when the selected ROM is the right one
 		   (setBackground, called from markChecksums below). */
 		var BG_MATCH = '#8fcc8f';   // pokedex green = ROM accepted
+		var BG_MISMATCH = '#877364';   // Stadium 2's error screen colour (PRIM; its texture: bg-error)
 		var BG_RANDOM = (function () {
 			var colours = [
 				'#c8c8c8',   // main menu
@@ -27,8 +29,10 @@
 			];
 			return colours[Math.floor(Math.random() * colours.length)];
 		})();
-		function setBackground(colour) {
-			document.documentElement.style.backgroundColor = colour;
+		function setBackground(colour, error) {
+			var html = document.documentElement;
+			html.style.backgroundColor = colour;
+			html.classList.toggle('bg-error', !!error);
 		}
 		setBackground(BG_RANDOM);
 	</script>
@@ -74,8 +78,11 @@
 			var box = document.getElementById('rom-patcher-rom-info');
 			box.classList.remove('hash-ok', 'hash-bad');
 			if (state) box.classList.add(state);
-			/* background: green only for the right ROM, otherwise the colour picked on load */
-			setBackground(state === 'hash-ok' ? BG_MATCH : BG_RANDOM);
+			/* background: green for the right ROM, Stadium 2's "!" error-screen background for
+			   a wrong one, otherwise the colour picked on load */
+			if (state === 'hash-ok') setBackground(BG_MATCH);
+			else if (state === 'hash-bad') setBackground(BG_MISMATCH, true);
+			else setBackground(BG_RANDOM);
 		}
 
 		window.addEventListener('load', function () {

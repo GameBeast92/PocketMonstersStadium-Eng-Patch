@@ -35,6 +35,10 @@ html {
 	background-size: 256px 256px;
 	background-blend-mode: multiply;
 }
+/* wrong ROM: Pokemon Stadium 2's error-screen background ("!" marks), ripped from its ROM and
+   redrawn at 4x (tools/redraw_ps2_error_bg.py), tinted with its own colour 877364 the same way
+   (the game: (PRIM - ENV) x texture + ENV with ENV black = texture x PRIM) */
+html.bg-error { background-image: url(assets/bg_ps2_error.png); }
 
 body {
 	margin: 0;
