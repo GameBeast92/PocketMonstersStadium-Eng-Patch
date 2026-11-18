@@ -1,0 +1,273 @@
+/* Pocket Monsters' Stadium English Patcher - page colours and layout.
+   Loaded after rom-patcher-js/style.css (the library's own stylesheet, left unchanged).
+   Colours = the Pokemon logo's yellow and blue (user's choice): yellow panel, blue frame
+   and Apply button, on the game's own main-menu background. */
+
+/* bold weight of the checksum font (the library's stylesheet only loads weight 300) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:700');
+
+:root {
+	--yellow: #ffcb05;          /* Pokemon logo yellow */
+	--yellow-light: #ffd83d;
+	--blue: #3d7dca;            /* Pokemon logo blue */
+	--panel: rgba(255, 203, 5, .85);  /* panel background: the logo yellow, 15% transparent (only the fill; text, frame and buttons stay solid) */
+	--panel-ink: #003a70;       /* text on the panel */
+	--frame: var(--blue);       /* panel frame */
+	--text: #f3f5ff;            /* text on dark areas */
+	--accent: var(--yellow);    /* title, link buttons */
+	--field: #f6f7fb;           /* form fields */
+	--field-ink: #10122a;
+	--ok: #0a7a2a;              /* checksum matches (dark green: readable on the yellow panel) */
+	--bad: #c21a1a;             /* checksum doesn't match (dark red) */
+}
+
+/* page background: Stadium 0's main-menu Poke Ball pattern, extracted from the game
+   (tools/extract_menu_bg.py) and redrawn at 4x from that tile (tools/redraw_menu_bg.py:
+   exact shapes, shading solved from the game's pixels, grey as the game colours it).
+   512 px picture shown at 256 px = the game's 128 px tile at 2x; fixed, like the corner renders */
+/* the tile holds the texture's own values (no colour); multiply by the tint = the game's
+   TEXEL0 x ENV.  --bg-tint is one of the game's 9 background colours, picked at random on
+   every page load (index.html, before the first paint) */
+html {
+	background: var(--bg-tint, #c8c8c8) url(assets/bg_pokeballs.png) repeat fixed;
+	background-size: 256px 256px;
+	background-blend-mode: multiply;
+}
+
+body {
+	margin: 0;
+	padding: 0 16px 40px;
+	background: transparent;
+	color: var(--text);
+	font: 15px 'Open Sans', sans-serif;
+}
+
+/* the game's logo above the page title (index.html) */
+.site-logo {
+	display: block;
+	width: min(520px, 94%);
+	height: auto;
+	margin: 30px auto 0;
+}
+.site-logo + h1 { margin-top: 10px; }
+
+header h1 {
+	margin: 44px 0 26px;
+	text-align: center;
+	font-size: 30px;
+	line-height: 1.25;
+	color: var(--accent);
+	text-wrap: balance;
+	/* dark edge + shadow: the title sits on the patterned background */
+	text-shadow: 0 2px 0 #000, 0 -1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 4px 10px rgba(0, 0, 0, .85);
+}
+
+/* ---- the panel ---- */
+#rom-patcher-container {
+	max-width: 660px;
+	padding: 28px 16px 22px;
+	border: 3px solid var(--frame);
+	border-radius: 8px;
+	background: var(--panel);
+	color: var(--panel-ink);
+	box-shadow: 0 0 0 2px #000, 0 10px 30px rgba(0, 0, 0, .6);
+}
+
+#rom-patcher-container .text-muted { color: var(--panel-ink); }
+
+/* readout: the ROM's checksums, the byte-order note and the required checksums,
+   bold text straight on the panel */
+.site-readout { margin: 12px 0 14px; }
+#rom-patcher-container .site-readout .text-mono { font-weight: 700; }
+/* Required CRC32 (the library's row) + Required MD5 / SHA-1: one group, no gaps between them */
+.site-readout #rom-patcher-row-patch-requirements { margin-bottom: 0; }
+#rom-patcher-container label { font-weight: 700; }
+#rom-patcher-container .rom-patcher-row > div:first-child { width: 27%; }
+#rom-patcher-container .rom-patcher-row > div:last-child { width: 71%; }
+#rom-patcher-container #rom-patcher-row-file-rom label { display: inline-block; line-height: 1.35; }
+
+/* Version and ROM fields: the buttons' style (shaded fill, lighter rim, rounded corners,
+   soft glow) in the fields' own colours.  The shading is an inset shadow, not a gradient
+   image, because the library keeps its icons (upload, tick, cross, arrow) in background-image. */
+#rom-patcher-container input[type=file],
+#rom-patcher-container select {
+	--rim: #ffffff;
+	--glow: rgba(255, 255, 255, .85);
+	background-color: var(--field);
+	color: var(--field-ink);
+	border: 2px solid var(--rim);
+	border-radius: 7px;
+	box-shadow: inset 16px -8px 18px -14px rgba(0, 58, 112, .28),
+		0 0 12px var(--glow), 0 0 2px rgba(0, 58, 112, .7);
+	transition: box-shadow .15s, filter .15s;
+}
+#rom-patcher-container input[type=file]:hover:not(:disabled),
+#rom-patcher-container select:hover:not(:disabled) {
+	background-color: #fff;
+	box-shadow: inset 16px -8px 18px -14px rgba(0, 58, 112, .2),
+		0 0 18px var(--glow), 0 0 3px rgba(0, 58, 112, .9);
+}
+#rom-patcher-container input[type=file]:focus:not(:disabled),
+#rom-patcher-container select:focus:not(:disabled) {
+	box-shadow: inset 16px -8px 18px -14px rgba(0, 58, 112, .28),
+		0 0 0 2px var(--blue), 0 0 12px var(--glow);
+}
+#rom-patcher-container select:disabled { color: var(--field-ink); opacity: 1; }
+/* one version in the list: the library draws it as plain text; keep it a field */
+#rom-patcher-container #rom-patcher-select-patch.single {
+	background-color: var(--field);
+	color: var(--field-ink) !important;
+	padding-left: 10px;
+	background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIi8+PC9zdmc+");
+}
+/* right ROM = green field, wrong ROM = pink field (the library's colours), rim and glow to match */
+#rom-patcher-container input[type=file].valid { background-color: #d6ffc8; --rim: #efffe8; --glow: rgba(150, 240, 120, .9); }
+#rom-patcher-container input[type=file].invalid { background-color: #ffc8c8; --rim: #ffe9e9; --glow: rgba(255, 130, 130, .9); }
+#rom-patcher-container input[type=file].valid:not(:disabled):not(.empty):hover { background-color: #c6fab5; }
+#rom-patcher-container input[type=file].invalid:not(:disabled):not(.empty):hover { background-color: #ffb9b9; }
+
+#rom-patcher-span-crc32 span.clickable:hover { color: #000; }
+
+/* checksums of the loaded ROM: green = the ROM the patch needs, red = another ROM */
+#rom-patcher-rom-info.hash-ok #rom-patcher-span-crc32,
+#rom-patcher-rom-info.hash-ok #rom-patcher-span-md5,
+#rom-patcher-rom-info.hash-ok #rom-patcher-span-sha1 { color: var(--ok); }
+#rom-patcher-rom-info.hash-bad #rom-patcher-span-crc32,
+#rom-patcher-rom-info.hash-bad #rom-patcher-span-md5,
+#rom-patcher-rom-info.hash-bad #rom-patcher-span-sha1 { color: var(--bad); }
+/* error message ("Source ROM checksum mismatch"): the Apply button's style in red
+   (gradient, lighter rim, rounded corners, glow) with the library's icon on a white badge */
+#rom-patcher-error-message {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	padding: 7px 20px 7px 10px;
+	border: 2px solid #ff9d9d;
+	border-radius: 7px;
+	background-color: #d62a2a;
+	background-image: linear-gradient(135deg, #b41c1c 0%, #d62a2a 55%, #ee5b5b 100%);
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: .3px;
+	box-shadow: 0 0 14px rgba(214, 42, 42, .7), 0 0 2px rgba(0, 58, 112, .8);
+}
+#rom-patcher-error-message::before {
+	content: "";
+	flex: none;
+	width: 24px;
+	height: 24px;
+	border-radius: 5px;
+	background: #fff url(rom-patcher-js/assets/icon_x_circle_red.svg) center / 16px no-repeat;
+}
+#rom-patcher-error-message:empty { display: none; }
+/* the library's milder notices use the same shape in orange */
+#rom-patcher-error-message.warning {
+	border-color: #ffc98a;
+	background-color: #e07a12;
+	background-image: linear-gradient(135deg, #c4660a 0%, #e07a12 55%, #f39a3d 100%);
+	color: #fff;
+	box-shadow: 0 0 14px rgba(224, 122, 18, .7), 0 0 2px rgba(0, 58, 112, .8);
+}
+#rom-patcher-error-message.warning::before { background-image: url(rom-patcher-js/assets/icon_alert_orange.svg); }
+#byte-order-note { color: var(--panel-ink); min-height: 0; }
+#byte-order-note:not(:empty) { margin-bottom: 8px; }
+
+/* Apply patch: gradient fill, lighter rim, rounded corners and a soft glow
+   (blue 3D7DCA box, yellow FFCB05 letters: the panel's colours reversed) */
+#rom-patcher-container button {
+	min-width: 170px;
+	padding: 11px 26px;
+	border: 2px solid #8db8ee;
+	border-radius: 7px;
+	background-color: var(--blue);
+	background-image: linear-gradient(135deg, #2f68b0 0%, #3d7dca 55%, #5a95de 100%);
+	color: var(--yellow);
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: .3px;
+	box-shadow: 0 0 14px rgba(61, 125, 202, .75), 0 0 2px rgba(0, 58, 112, .9);
+	transition: box-shadow .15s, filter .15s, transform .05s;
+}
+#rom-patcher-container button:not(:disabled):hover {
+	background-color: var(--blue);
+	filter: brightness(1.1);
+	box-shadow: 0 0 20px rgba(61, 125, 202, 1), 0 0 3px rgba(0, 58, 112, 1);
+}
+#rom-patcher-container button:not(:disabled):active { background-color: var(--blue); filter: brightness(.93); }
+#rom-patcher-container button:disabled { box-shadow: none; }
+#rom-patcher-container button:focus-visible { outline: 2px solid var(--panel-ink); outline-offset: 3px; }
+
+/* ---- About (GitHub): same button style as Apply patch (gradient, lighter rim,
+   rounded corners, soft glow), in grey ---- */
+.site-links {
+	display: flex;
+	justify-content: center;
+	margin: 20px 0 0;
+}
+.site-button {
+	display: inline-block;
+	min-width: 170px;
+	box-sizing: border-box;
+	padding: 10px 26px;
+	border: 2px solid #c3c9d3;
+	border-radius: 7px;
+	background-color: #747c8a;
+	background-image: linear-gradient(135deg, #5c6370 0%, #747c8a 55%, #9098a6 100%);
+	color: #fff;
+	font-size: 16px;
+	font-weight: 700;
+	letter-spacing: .3px;
+	text-align: center;
+	text-decoration: none;
+	box-shadow: 0 0 14px rgba(92, 99, 112, .7), 0 0 2px rgba(0, 58, 112, .8);
+	transition: box-shadow .15s, filter .15s;
+}
+.site-button:hover {
+	filter: brightness(1.1);
+	box-shadow: 0 0 20px rgba(92, 99, 112, .95), 0 0 3px rgba(0, 58, 112, 1);
+}
+.site-button:active { filter: brightness(.93); }
+.site-button:focus-visible { outline: 2px solid var(--panel-ink); outline-offset: 3px; }
+
+/* ---- notes under the strip ---- */
+.site-notes {
+	margin: 16px 6px 0;
+	text-align: center;
+	line-height: 1.75;
+	font-weight: 600;
+	-webkit-user-select: text;
+	user-select: text;
+}
+.site-notes p { margin: 0 0 12px; }
+.site-notes p:last-child { margin-bottom: 0; }
+
+/* ---- decoration: Poliwhirl bottom left, Psyduck bottom right ----
+   Fixed to the window's bottom corners, behind the content.  Their width follows the free
+   space beside the 660 px panel, so they never cover it; hidden when there is no room. */
+.site-mon {
+	position: fixed;
+	bottom: 0;
+	z-index: 0;
+	width: min(340px, calc((100vw - 720px) / 2));
+	height: auto;
+	pointer-events: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.site-mon-left { left: 0; }
+.site-mon-right { right: 0; }
+header, main, footer { position: relative; z-index: 1; }
+@media (max-width: 1000px) { .site-mon { display: none; } }
+
+/* ---- footer ---- */
+#rom-patcher-powered { margin-top: 22px; }
+#rom-patcher-powered a { color: #f0f0f0; text-shadow: 0 1px 3px #000, 0 0 6px #000; }
+#rom-patcher-powered a:hover { color: var(--accent); }
+
+@media (max-width: 560px) {
+	header h1 { font-size: 23px; margin-top: 28px; }
+	#rom-patcher-container .rom-patcher-row { flex-wrap: wrap; }
+	#rom-patcher-container .rom-patcher-row > div:first-child,
+	#rom-patcher-container .rom-patcher-row > div:last-child { width: 100%; }
+	#rom-patcher-container .rom-patcher-row > div.text-right { text-align: left; }
+}

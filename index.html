@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+
+<head>
+	<title>Pocket Monsters' Stadium English Patcher</title>
+	<meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" type="image/png" href="./assets/favicon.png" />
+	<meta name="description" content="Patch your own Pocket Monsters Stadium (Japan) ROM into English, in your browser." />
+
+	<script type="text/javascript">
+		/* background colour: one of the 9 colours Stadium 0's code draws its menu background in
+		   (tools/make_menu_bg_psd.py), picked at random on every load */
+		(function () {
+			var colours = [
+				'#c8c8c8',   // main menu
+				'#cc8f8f',   // battle mode
+				'#cc8fb8',   // register
+				'#8f8fcc',   // organize
+				'#ffd57f',   // list
+				'#8fcc8f',   // pokedex
+				'#8fccb8',   // party
+				'#ab4966',   // team select before battle
+				'#3264a2'    // unused pokedex menu
+			];
+			document.documentElement.style.setProperty('--bg-tint', colours[Math.floor(Math.random() * colours.length)]);
+		})();
+	</script>
+
+	<!-- Rom Patcher JS (github.com/marcrobledo/RomPatcher.js, MIT): library files, unchanged -->
+	<link type="text/css" rel="stylesheet" href="./rom-patcher-js/style.css" media="all" />
+	<script type="text/javascript" src="./rom-patcher-js/RomPatcher.webapp.js"></script>
+
+	<!-- this page: colours / layout, and the patch details written by tools/make_patch.py -->
+	<link type="text/css" rel="stylesheet" href="./site.css" media="all" />
+	<script type="text/javascript" src="./patch_info.js"></script>
+
+	<script type="text/javascript">
+		/* ---- settings you may want to change ---- */
+		var GITHUB_URL = 'https://github.com/GameBeast92/Stadium0EnglishPatcher';   // the "About (GitHub)" button
+
+		/* N64 ROM dumps come in three byte orders.  The patch is made for the standard
+		   big-endian order (.z64); other dumps are converted in memory before they are
+		   checked and patched, so every correct dump of the game works.  The patched ROM
+		   is always saved as .z64. */
+		function toBigEndian(romFile) {
+			var u8 = romFile._u8array;
+			var note = document.getElementById('byte-order-note');
+			note.textContent = '';
+			if (!u8 || u8.length < 4) return;
+			var magic = ((u8[0] << 24) | (u8[1] << 16) | (u8[2] << 8) | u8[3]) >>> 0;
+			var i, t, n = u8.length;
+			if (magic === 0x37804012) {            /* .v64: bytes swapped in pairs */
+				for (i = 0; i + 1 < n; i += 2) { t = u8[i]; u8[i] = u8[i + 1]; u8[i + 1] = t; }
+				note.textContent = 'Byte-swapped dump (.v64 order) detected: converted to .z64 order.';
+			} else if (magic === 0x40123780) {     /* .n64: little-endian words */
+				for (i = 0; i + 3 < n; i += 4) {
+					t = u8[i]; u8[i] = u8[i + 3]; u8[i + 3] = t;
+					t = u8[i + 1]; u8[i + 1] = u8[i + 2]; u8[i + 2] = t;
+				}
+				note.textContent = 'Little-endian dump (.n64 order) detected: converted to .z64 order.';
+			}
+		}
+
+		/* CRC32 / MD5 / SHA-1 of the loaded ROM: green when it is the ROM the patch needs,
+		   red when it is not (state = 'hash-ok', 'hash-bad' or null while calculating). */
+		function markChecksums(state) {
+			var box = document.getElementById('rom-patcher-rom-info');
+			box.classList.remove('hash-ok', 'hash-bad');
+			if (state) box.classList.add(state);
+		}
+
+		window.addEventListener('load', function () {
+			var P = window.STADIUM_PATCH;
+			document.getElementById('link-about').href = GITHUB_URL;
+			document.getElementById('needed-md5').textContent = P.input.md5;
+			document.getElementById('needed-sha1').textContent = P.input.sha1;
+			try {
+				RomPatcherWeb.initialize({
+					language: 'en',
+					requireValidation: true,       /* only the right ROM can be patched */
+					onloadrom: function (romFile) { markChecksums(null); toBigEndian(romFile); },
+					onvalidaterom: function (romFile, valid) { markChecksums(valid ? 'hash-ok' : 'hash-bad'); }
+				}, {
+					file: './' + P.zip,
+					patches: [{
+						file: P.patchFile,
+						name: 'English v' + P.version + ' (Latest)',
+						description: 'English translation of Pocket Monsters Stadium (Japan)',
+						outputName: P.outputName,
+						outputExtension: 'z64',
+						inputCrc32: '0x' + P.input.crc32
+					}]
+				});
+			} catch (err) {
+				var message = err.message;
+				if (/incompatible browser/i.test(message) || /variable RomPatcherWeb/i.test(message))
+					message = 'Your browser is outdated and it is not compatible with this app.';
+				document.getElementById('rom-patcher-container').innerHTML = message;
+				document.getElementById('rom-patcher-container').style.color = '#ff8080';
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<header>
+		<img class="site-logo" src="./assets/logo.webp" width="1040" height="454" alt="Pocket Monsters' Stadium" />
+		<h1>English Patcher</h1>
+	</header>
+
+	<main>
+		<!-- Rom Patcher JS container.  Required ids: rom-patcher-input-file-rom,
+		     rom-patcher-select-patch, rom-patcher-button-apply -->
+		<div id="rom-patcher-container">
+			<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-patch">
+				<div class="text-right"><label for="rom-patcher-select-patch">Version:</label></div>
+				<div class="rom-patcher-container-input">
+					<select id="rom-patcher-select-patch"></select>
+				</div>
+			</div>
+
+			<div class="rom-patcher-row margin-bottom" id="rom-patcher-row-file-rom">
+				<div class="text-right"><label for="rom-patcher-input-file-rom">Pocket Monsters Stadium (Japan) ROM:</label></div>
+				<div class="rom-patcher-container-input">
+					<input type="file" id="rom-patcher-input-file-rom" class="empty" disabled />
+				</div>
+			</div>
+
+			<div class="site-readout">
+			<div class="margin-bottom text-selectable text-mono text-muted" id="rom-patcher-rom-info">
+				<div class="rom-patcher-row">
+					<div class="text-right">CRC32:</div>
+					<div class="text-truncate"><span id="rom-patcher-span-crc32"></span></div>
+				</div>
+				<div class="rom-patcher-row">
+					<div class="text-right">MD5:</div>
+					<div class="text-truncate"><span id="rom-patcher-span-md5"></span></div>
+				</div>
+				<div class="rom-patcher-row">
+					<div class="text-right">SHA-1:</div>
+					<div class="text-truncate"><span id="rom-patcher-span-sha1"></span></div>
+				</div>
+				<div class="rom-patcher-row" id="rom-patcher-row-info-rom">
+					<div class="text-right">ROM:</div>
+					<div class="text-truncate"><span id="rom-patcher-span-rom-info"></span></div>
+				</div>
+			</div>
+			<div class="text-center text-mono" id="byte-order-note"></div>
+
+			<div class="rom-patcher-row margin-bottom text-selectable text-mono text-muted"
+				id="rom-patcher-row-patch-requirements">
+				<div class="text-right text-mono" id="rom-patcher-patch-requirements-type">ROM requirements:</div>
+				<div class="text-truncate" id="rom-patcher-patch-requirements-value"></div>
+			</div>
+			<div class="rom-patcher-row text-selectable text-mono text-muted">
+				<div class="text-right">Required MD5:</div>
+				<div class="text-truncate"><span id="needed-md5"></span></div>
+			</div>
+			<div class="rom-patcher-row margin-bottom text-selectable text-mono text-muted">
+				<div class="text-right">Required SHA-1:</div>
+				<div class="text-truncate"><span id="needed-sha1"></span></div>
+			</div>
+			</div>
+
+			<div class="text-center" id="rom-patcher-row-apply">
+				<div id="rom-patcher-row-error-message" class="margin-bottom"><span id="rom-patcher-error-message"></span></div>
+				<button id="rom-patcher-button-apply" data-localize="yes" disabled>Apply patch</button>
+			</div>
+
+			<nav class="site-links">
+				<a class="site-button" id="link-about" href="#" target="_blank" rel="noopener">About (GitHub)</a>
+			</nav>
+
+			<div class="site-notes">
+				<p>
+					You will need to provide your own LEGAL copy of Pocket Monsters Stadium (Japan, 1998),
+					select it as the "Pocket Monsters Stadium (Japan) ROM".
+				</p>
+				<p>
+					This project does not provide copyrighted game files. You must legally obtain them yourself.
+					Nothing is uploaded: the ROM is patched inside your browser.
+				</p>
+				<p>
+					.z64, .v64 and .n64 dumps all work (also inside a .zip); the patched ROM is saved as .z64.
+					The patcher only accepts the original, unmodified game.
+				</p>
+			</div>
+		</div>
+	</main>
+
+	<footer id="rom-patcher-powered" class="text-center">
+		<a href="https://github.com/marcrobledo/RomPatcher.js" target="_blank" rel="noopener"><img
+				src="rom-patcher-js/assets/powered_by_rom_patcher_js.png" loading="lazy" alt="" />Powered by Rom Patcher JS</a>
+	</footer>
+	<!-- decoration: Stadium promo renders in the bottom corners of the window (hidden on narrow screens) -->
+	<img class="site-mon site-mon-left" src="./assets/poliwhirl.webp" width="680" height="781" alt="" aria-hidden="true" />
+	<img class="site-mon site-mon-right" src="./assets/psyduck.webp" width="680" height="795" alt="" aria-hidden="true" />
+</body>
+
+</html>
