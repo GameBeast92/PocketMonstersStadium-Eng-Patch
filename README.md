@@ -5,7 +5,7 @@ My first attempt at an English translation patch for **Pocket Monsters' Stadium*
 ----------
 
 ## About the translation
-Every word and term was cross-referenced with the US *Pokémon Stadium* to keep everything pure and faithful.
+Every word and term was cross-referenced with the US *Pokémon Stadium* to keep everything pure and faithful.\
 Also, the Trainers who only appear in this game (from the Nintendo Cup '97 and '98) take their names from Bulbapedia.
 
 ----------
