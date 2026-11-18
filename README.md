@@ -1,4 +1,4 @@
-# Pocket Monsters' Stadium English Patcher
+# Pocket Monsters' Stadium now in English!
 
 <p align="center">
   <img src="PocketMonsters'StadiumLogo.png" width="100%">
